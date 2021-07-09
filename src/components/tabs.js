@@ -35,12 +35,14 @@ const Tabs = (topics) => {
 // Append the tabs to the element in the DOM that matches the selector passed to the function.
 //
 const tabsAppender = (selector) => {
-  const obj = document.querySelector(selector);
+  const b = document.querySelector(selector);
+
   axios
     .get(`https://lambda-times-api.herokuapp.com/topics`)
     .then((response) => {
+      console.log(response);
       const tabs = Tabs(response.data.topics);
-      obj.appendChild(tabs);
+      b.appendChild(tabs);
     });
 };
 

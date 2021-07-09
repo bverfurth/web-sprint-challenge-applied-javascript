@@ -18,7 +18,34 @@
 //
 import axios from "axios";
 
-const Card = (article) => {};
+const Card = (article) => {
+  const card = document.createElement("div");
+  card.classList.add("card");
+
+  const headline = document.createElement("div");
+  headline.classList.add("headline");
+  headline.textContent = `By ${article.name}`;
+  card.appendChild(headline);
+
+  const author = document.createElement("div");
+  author.classList.add("author");
+  card.appendChild(author);
+
+  const imgContainer = document.createElement("div");
+  imgContainer.classList.add("img-container");
+  author.appendChild(imgContainer);
+
+  const img = document.createElement("img");
+  img.setAttribute("src", `${article.authorPhoto}`);
+  imgContainer.appendChild(img);
+
+  const authorName = document.createElement("span");
+  authorName.textContent = `By ${article.name}`;
+  author.appendChild(authorName);
+
+  card.addEventListener("click", (event) => {});
+  return card;
+};
 
 // TASK 6
 // ---------------------
@@ -28,6 +55,44 @@ const Card = (article) => {};
 // Create a card from each and every article object in the response, using the Card component.
 // Append each card to the element in the DOM that matches the selector passed to the function.
 //
-const cardAppender = (selector) => {};
+
+//FUnction to implement css selector
+
+const cardAppender = (selector) =>
+  axios.get("https://lambda-times-api.herokuapp.com/articles").then((item) => {
+    const cardInfo = item.data.articles;
+
+    // JavaScript
+
+    for (let i = 0; i < cardInfo.javascript.length; i++) {
+      const articleInfo = cardInfo.javascript[i];
+      const cardDiv = document.querySelector(selector);
+      cardDiv.appendChild(Card(articleInfo));
+    }
+
+    for (let i = 0; i < cardInfo.bootstrap.length; i++) {
+      const articleInfo = cardInfo.bootstrap[i];
+      const cardDiv = document.querySelector(selector);
+      cardDiv.appendChild(Card(articleInfo));
+    }
+
+    for (let i = 0; i < cardInfo.jquery.length; i++) {
+      const articleInfo = cardInfo.jquery[i];
+      const cardDiv = document.querySelector(selector);
+      cardDiv.appendChild(Card(articleInfo));
+    }
+
+    for (let i = 0; i < cardInfo.node.length; i++) {
+      const articleInfo = cardInfo.node[i];
+      const cardDiv = document.querySelector(selector);
+      cardDiv.appendChild(Card(articleInfo));
+    }
+
+    for (let i = 0; i < cardInfo.technology.length; i++) {
+      const articleInfo = cardInfo.technology[i];
+      const cardDiv = document.querySelector(selector);
+      cardDiv.appendChild(Card(articleInfo));
+    }
+  });
 
 export { Card, cardAppender };
