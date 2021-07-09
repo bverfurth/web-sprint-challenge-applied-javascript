@@ -24,8 +24,8 @@ const Card = (article) => {
 
   const headline = document.createElement("div");
   headline.classList.add("headline");
-  card.appendChild(headline);
   headline.textContent = article.headline;
+  card.appendChild(headline);
 
   const author = document.createElement("div");
   author.classList.add("author");
@@ -36,12 +36,12 @@ const Card = (article) => {
   author.appendChild(imgContainer);
 
   const img = document.createElement("img");
-  imgContainer.appendChild(img);
   img.setAttribute("src", `${article.authorPhoto}`);
+  imgContainer.appendChild(img);
 
   const authorName = document.createElement("span");
+  authorName.textContent = `By ${article.authorName}`;
   author.appendChild(authorName);
-  authorName.textContent = `By ${article.name}`;
 
   card.addEventListener("click", (event) => {
     console.log(headline);
@@ -61,16 +61,29 @@ const Card = (article) => {
 
 //FUnction to implement css selector
 const cardAppender = (selector) => {
-  const myArr = ["javascript", "bootstrap", "technology", "jquery", "node"];
+  const selectedElem = document.querySelector(selector);
   axios
     .get("https://lambda-times-api.herokuapp.com/articles")
     .then((res) => {
-      console.log(success);
-      myArr.forEach((topic) => {
-        res.data.articles[topic].forEach((item) => {
-          const newDiv = Card(item);
-          document.querySelector(selector).appendChild(newDiv);
-        });
+      const bootstrap = res.data.articles.bootstrap;
+      bootstrap.forEach((element) => {
+        selectedElem.appendChild(Card(element));
+      });
+      const js = res.data.articles.javascript;
+      js.forEach((element) => {
+        selectedElem.appendChild(Card(element));
+      });
+      const tech = res.data.articles.technology;
+      tech.forEach((element) => {
+        selectedElem.appendChild(Card(element));
+      });
+      const jq = res.data.articles.jquery;
+      jq.forEach((element) => {
+        selectedElem.appendChild(Card(element));
+      });
+      const node = res.data.articles.node;
+      node.forEach((element) => {
+        selectedElem.appendChild(Card(element));
       });
     })
     .catch((err) => {
