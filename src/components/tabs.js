@@ -35,15 +35,18 @@ const Tabs = (topics) => {
 // Append the tabs to the element in the DOM that matches the selector passed to the function.
 //
 const tabsAppender = (selector) => {
+  const container = document.querySelector(selector);
+
   axios
-    .get("https://lambda-times-api.herokuapp.com/topics")
-    .then((response) => {
-      document.querySelector(selector).appendChild(Tabs(response.data.topics));
-      console.log(document.querySelector(selector));
+    .get(`http://localhost:5000/api/topics`, {})
+    .then(function (res) {
+      console.log(res);
+      container.appendChild(Tabs(res.data.topics));
     })
-    .catch((error) => {
-      console.log("something went wrong", error);
-    });
+    .catch(function (err) {
+      console.log(err);
+    })
+    .then(function () {});
 };
 
 export { Tabs, tabsAppender };

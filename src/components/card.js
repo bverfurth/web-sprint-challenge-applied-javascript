@@ -61,29 +61,15 @@ const Card = (article) => {
 
 //FUnction to implement css selector
 const cardAppender = (selector) => {
-  const selectedElem = document.querySelector(selector);
+  const array = ["javascript", "bootstrap", "technology", "jquery", "node"];
   axios
-    .get("https://lambda-times-api.herokuapp.com/articles")
+    .get(`https://lambda-times-api.herokuapp.com/articles`)
     .then((res) => {
-      const bootstrap = res.data.articles.bootstrap;
-      bootstrap.forEach((element) => {
-        selectedElem.appendChild(Card(element));
-      });
-      const js = res.data.articles.javascript;
-      js.forEach((element) => {
-        selectedElem.appendChild(Card(element));
-      });
-      const tech = res.data.articles.technology;
-      tech.forEach((element) => {
-        selectedElem.appendChild(Card(element));
-      });
-      const jq = res.data.articles.jquery;
-      jq.forEach((element) => {
-        selectedElem.appendChild(Card(element));
-      });
-      const node = res.data.articles.node;
-      node.forEach((element) => {
-        selectedElem.appendChild(Card(element));
+      array.forEach((topic) => {
+        res.data.articles[topic].forEach((el) => {
+          const newDiv = Card(el);
+          document.querySelector(selector).appendChild(newDiv);
+        });
       });
     })
     .catch((err) => {
