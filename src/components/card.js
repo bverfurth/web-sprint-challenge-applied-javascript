@@ -24,8 +24,8 @@ const Card = (article) => {
 
   const headline = document.createElement("div");
   headline.classList.add("headline");
-  headline.textContent = `By ${article.name}`;
   card.appendChild(headline);
+  headline.textContent = article.headline;
 
   const author = document.createElement("div");
   author.classList.add("author");
@@ -36,14 +36,17 @@ const Card = (article) => {
   author.appendChild(imgContainer);
 
   const img = document.createElement("img");
-  img.setAttribute("src", `${article.authorPhoto}`);
   imgContainer.appendChild(img);
+  img.setAttribute("src", `${article.authorPhoto}`);
 
   const authorName = document.createElement("span");
-  authorName.textContent = `By ${article.name}`;
   author.appendChild(authorName);
+  authorName.textContent = `By ${article.name}`;
 
-  card.addEventListener("click", (event) => {});
+  card.addEventListener("click", (event) => {
+    console.log(headline);
+  });
+
   return card;
 };
 
@@ -57,42 +60,20 @@ const Card = (article) => {
 //
 
 //FUnction to implement css selector
-
-const cardAppender = (selector) =>
-  axios.get("https://lambda-times-api.herokuapp.com/articles").then((item) => {
-    const cardInfo = item.data.articles;
-
-    // JavaScript
-
-    for (let i = 0; i < cardInfo.javascript.length; i++) {
-      const articleInfo = cardInfo.javascript[i];
-      const cardDiv = document.querySelector(selector);
-      cardDiv.appendChild(Card(articleInfo));
-    }
-
-    for (let i = 0; i < cardInfo.bootstrap.length; i++) {
-      const articleInfo = cardInfo.bootstrap[i];
-      const cardDiv = document.querySelector(selector);
-      cardDiv.appendChild(Card(articleInfo));
-    }
-
-    for (let i = 0; i < cardInfo.jquery.length; i++) {
-      const articleInfo = cardInfo.jquery[i];
-      const cardDiv = document.querySelector(selector);
-      cardDiv.appendChild(Card(articleInfo));
-    }
-
-    for (let i = 0; i < cardInfo.node.length; i++) {
-      const articleInfo = cardInfo.node[i];
-      const cardDiv = document.querySelector(selector);
-      cardDiv.appendChild(Card(articleInfo));
-    }
-
-    for (let i = 0; i < cardInfo.technology.length; i++) {
-      const articleInfo = cardInfo.technology[i];
-      const cardDiv = document.querySelector(selector);
-      cardDiv.appendChild(Card(articleInfo));
-    }
-  });
-
+const cardAppender = (selector) => {
+  const array = ["javascript", "bootstrap", "technology", "jquery", "node"];
+  axios
+    .get(`https://lambda-times-api.herokuapp.com/articles`)
+    .then((res) => {
+      array.forEach((topic) => {
+        res.data.articles[topic].forEach((el) => {
+          const newDiv = Card(el);
+          document.querySelector(selector).appendChild(newDiv);
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 export { Card, cardAppender };
